@@ -1,9 +1,8 @@
 """
-API endpoints for Cars 
+API endpoints for Cars
 """
 
 from .Base_API import Base_API
-import json
 
 class Cars_API_Endpoints(Base_API):
 	"Class for cars endpoints"
@@ -41,7 +40,7 @@ class Cars_API_Endpoints(Base_API):
 			'url':url,
 			'response':json_response['json_response']
 		}
-	
+
 
 	def update_car(self,car_name,json,headers):
 		"updates a given car"
@@ -51,8 +50,8 @@ class Cars_API_Endpoints(Base_API):
 			'url':url,
 			'response':json_response['json_response']
 		}
-		
-	
+
+
 	def remove_car(self,car_name,headers):
 		"deletes a car entry"
 		url =self.cars_url('/remove/%s'%car_name)
