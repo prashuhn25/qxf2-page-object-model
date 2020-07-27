@@ -4,7 +4,7 @@ NOTE: Change this class as you add support for:
 1. SauceLabs/BrowserStack
 2. More browsers like Opera
 """
-import dotenv,os,sys,requests,json
+import os,sys,requests,json
 from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
@@ -164,7 +164,7 @@ class DriverFactory():
         desired_capabilities = {}
         desired_capabilities['platformName'] = mobile_os_name
         desired_capabilities['platformVersion'] = mobile_os_version
-        desired_capabilities['deviceName'] = device_name
+        desired_capabilities['deviceName'] = device_namez
         
         if mobile_os_name in 'Android':
             if (remote_flag.lower() == 'y'):
