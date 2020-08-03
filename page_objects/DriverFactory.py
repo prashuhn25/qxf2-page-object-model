@@ -12,6 +12,7 @@ from selenium.webdriver.remote.webdriver import RemoteConnection
 from appium import webdriver as mobile_webdriver
 from conf import remote_credentials
 from conf import opera_browser_conf
+from page_objects.Remote_Options import Remote_Options
 
 class DriverFactory():
 
@@ -24,28 +25,41 @@ class DriverFactory():
     def get_web_driver(self,remote_flag,os_name,os_version,browser,browser_version,remote_project_name,remote_build_name):
         "Return the appropriate driver"
         if (remote_flag.lower() == 'y'):
-            web_driver= self.get_browser(os_name,os_version,browser,browser_version,remote_project_name,remote_build_name)
+            web_driver= self.select_remote_platform(os_name,os_version,browser,browser_version,remote_project_name,remote_build_name)
 
         elif (remote_flag.lower() == 'n'):
             web_driver = self.run_local(os_name,os_version,browser,browser_version)
 
         return web_driver
     
-    def get_browser(self,os_name,os_version,browser,browser_version,remote_project_name,remote_build_name):
+    def get_browser(self,browser,browser_version):
+        "select the browser"
         try:
             if browser.lower() == 'ff' or browser.lower() == 'firefox':
-                web_driver=self.firefox(os_name,os_version,browser_version,remote_project_name,remote_build_name)
+                desired_capabilities = Remote_Options.firefox(browser_version)
             elif browser.lower() == 'ie':
-                web_driver=self.explorer(os_name,os_version,browser_version,remote_project_name,remote_build_name)
+                desired_capabilities = Remote_Options.explorer(browser_version)
             elif browser.lower() == 'chrome':
-                web_driver=self.chrome(os_name,os_version,browser_version,remote_project_name,remote_build_name)
+                desired_capabilities = Remote_Options.chrome(browser_version)
             elif browser.lower() == 'opera':
-                web_driver=self.opera(os_name,os_version,browser_version,remote_project_name,remote_build_name)
+                desired_capabilities = Remote_Options.opera(browser_version)
             elif browser.lower() == 'safari':
-                web_driver=self.safari(os_name,os_version,browser_version,remote_project_name,remote_build_name)
+                desired_capabilities = Remote_Options.safari(browser_version)
+            elif browser.lower() == 'edge':
+                desired_capabilities = Remote_Options.edge(browser_version)           
+            
+            return desired_capabilities
+
+        except Exception as e:
+            print("\nDriverFactory does not know the browser\t%s\n"%browser)
+
+    def select_remote_platform(self,os_name,os_version,browser,browser_version,remote_project_name,remote_build_name):
+        "Select the remote platform to run the test when the remote_flag is Y"
+        try:
+            if remote_credentials.REMOTE_BROWSER_PLATFORM == 'BS':
+                web_driver = self.run_browserstack(os_name,os_version,browser,browser_version,remote_project_name,remote_build_name)       
             else:
-                print("DriverFactory does not know the browser: ",browser)
-                web_driver = None
+                web_driver = self.run_sauce_lab(os_name,os_version,browser,browser_version)
             
             return web_driver
 
@@ -53,69 +67,25 @@ class DriverFactory():
             print("\nException when trying to get remote webdriver:%s"%sys.modules[__name__])
             print("Python says:%s"%str(e))
             print("SOLUTION: It looks like you are trying to use a cloud service provider (BrowserStack or Sauce Labs) to run your test. \nPlease make sure you have updated ./conf/remote_credentials.py with the right credentials and try again. \nTo use your local browser please run the test with the -M N flag.\n")
-    
-    def firefox(self,os_name,os_version,browser_version,remote_project_name,remote_build_name):
 
-        self.desired_capabilities = DesiredCapabilities.FIREFOX
-        self.desired_capabilities['browser_version'] = browser_version
-        if remote_credentials.REMOTE_BROWSER_PLATFORM == 'BS':
-            web_driver = self.run_browserstack(desired_capabilities,os_name,os_version,remote_project_name,remote_build_name)       
-        else:
-            web_driver = self.run_sauce_lab(desired_capabilities,os_name,os_version)
-        
-        return web_driver
-    
-    def explorer(self,os_name,os_version,browser_version,remote_project_name,remote_build_name):
-        desired_capabilities = DesiredCapabilities.INTERNETEXPLORER
-        desired_capabilities['browser_version'] = browser_version
-        if remote_credentials.REMOTE_BROWSER_PLATFORM == 'BS':
-            web_driver = self.run_browserstack(desired_capabilities,os_name,os_version,remote_project_name,remote_build_name)       
-        else:
-            web_driver = self.run_sauce_lab(desired_capabilities,os_name,os_version)
-
-        return web_driver
-    
-    def chrome(self,os_name,os_version,browser_version,remote_project_name,remote_build_name):
-        desired_capabilities = DesiredCapabilities.CHROME
-        desired_capabilities['browser_version'] = browser_version
-        if remote_credentials.REMOTE_BROWSER_PLATFORM == 'BS':
-            web_driver = self.run_browserstack(desired_capabilities,os_name,os_version,remote_project_name,remote_build_name)       
-        else:
-            web_driver = self.run_sauce_lab(desired_capabilities,os_name,os_version)
-        
-        return web_driver
-
-    def opera(self,os_name,os_version,browser_version,remote_project_name,remote_build_name):
-        desired_capabilities = DesiredCapabilities.OPERA
-        desired_capabilities['browser_version'] = browser_version
-        if remote_credentials.REMOTE_BROWSER_PLATFORM == 'BS':
-            web_driver = self.run_browserstack(desired_capabilities,os_name,os_version,remote_project_name,remote_build_name)       
-        else:
-            web_driver = self.run_sauce_lab(desired_capabilities,os_name,os_version)
-        
-        return web_driver
-
-    def safari(self,os_name,os_version,browser_version,remote_project_name,remote_build_name):
-        desired_capabilities = DesiredCapabilities.SAFARI
-        desired_capabilities['browser_version'] = browser_version
-        if remote_credentials.REMOTE_BROWSER_PLATFORM == 'BS':
-            web_driver = self.run_browserstack(desired_capabilities,os_name,os_version,remote_project_name,remote_build_name)       
-        else:
-            web_driver = self.run_sauce_lab(desired_capabilities,os_name,os_version)
-        
-        return web_driver
-
-    def run_browserstack(self,os_name,os_version,remote_project_name,remote_build_name):
+    def run_browserstack(self,os_name,os_version,browser,browser_version,remote_project_name,remote_build_name):
         "Run the test in browser stack when remote flag is 'Y'"
         #Get the browser stack credentials from browser stack credentials file
         USERNAME = remote_credentials.USERNAME
         PASSWORD = remote_credentials.ACCESS_KEY
-        desired_capabilities['os'] = os_name
-        desired_capabilities['os_version'] = os_version
+        #Set browser
+        desired_capabilities=self.get_browser(browser,browser_version)
+        
+        #Set os and os_version
+        desired_capabilities = Remote_Options.set_os(desired_capabilities, os_name, os_version)
+
+        #Set remote project name
         if remote_project_name is not None:
-            desired_capabilities['project'] = remote_project_name
+            desired_capabilities = Remote_Options.remote_project_name(desired_capabilities,remote_project_name)
+
+        #Set remote build name
         if remote_build_name is not None:
-            desired_capabilities['build'] = remote_build_name+"_"+str(datetime.now().strftime("%c"))
+            desired_capabilities = Remote_Options.remote_build_name(desired_capabilities,remote_build_name)
 
         return webdriver.Remote(RemoteConnection("http://%s:%s@hub-cloud.browserstack.com/wd/hub"%(USERNAME,PASSWORD),resolve_ip= False),
             desired_capabilities=desired_capabilities)
@@ -125,13 +95,14 @@ class DriverFactory():
         #Get the sauce labs credentials from sauce.credentials file
         USERNAME = remote_credentials.USERNAME
         PASSWORD = remote_credentials.ACCESS_KEY
+        desired_capabilities=self.get_browser(browser,browser_version)
         desired_capabilities['platform'] = os_name + ' '+os_version
 
         return webdriver.Remote(command_executor="http://%s:%s@ondemand.saucelabs.com:80/wd/hub"%(USERNAME,PASSWORD),
                 desired_capabilities= desired_capabilities)
 
     def run_local(self,os_name,os_version,browser,browser_version):
-        "Return the local driver"
+        "Run the test on local system"
         local_driver = None
         if browser.lower() == "ff" or browser.lower() == 'firefox':
             local_driver = webdriver.Firefox()
@@ -157,14 +128,14 @@ class DriverFactory():
         return local_driver
 
     def run_mobile(self,mobile_os_name,mobile_os_version,device_name,app_package,app_activity,remote_flag,device_flag,app_name,app_path,ud_id,org_id,signing_id,no_reset_flag,appium_version):
-        "Setup mobile device"
+        "Specify the remote mobile device configurations and run the tests against it"
         #Get the remote credentials from remote_credentials file
         USERNAME = remote_credentials.USERNAME
         PASSWORD = remote_credentials.ACCESS_KEY
         desired_capabilities = {}
         desired_capabilities['platformName'] = mobile_os_name
         desired_capabilities['platformVersion'] = mobile_os_version
-        desired_capabilities['deviceName'] = device_namez
+        desired_capabilities['deviceName'] = device_name
         
         if mobile_os_name in 'Android':
             if (remote_flag.lower() == 'y'):
