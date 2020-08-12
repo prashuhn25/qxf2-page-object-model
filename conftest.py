@@ -19,7 +19,11 @@ def test_obj(base_url,browser,browser_version,os_version,os_name,remote_flag,tes
         #Setup TestRail reporting
         if testrail_flag.lower()=='y':
             if test_run_id is None:
+<<<<<<< HEAD
             test_obj.write('\033[91m'+"\n\nTestRail Integration Exception: It looks like you are trying to use TestRail Integration without providing test run id. \nPlease provide a valid test run id along with test run command using -R flag and try again. for eg: pytest --testrail_flag Y -R 100\n"+'\033[0m')
+=======
+                test_obj.write('\033[91m'+"\n\nTestRail Integration Exception: It looks like you are trying to use TestRail Integration without providing test run id. \nPlease provide a valid test run id along with test run command using -R flag and try again. for eg: pytest -X Y -R 100\n"+'\033[0m')
+>>>>>>> master
                 testrail_flag = 'N'
             if test_run_id is not None:
                 test_obj.register_testrail()
@@ -52,7 +56,11 @@ def test_mobile_obj(mobile_os_name, mobile_os_version, device_name, app_package,
         #3. Setup TestRail reporting
         if testrail_flag.lower()=='y':
             if test_run_id is None:
+<<<<<<< HEAD
             test_mobile_obj.write('\033[91m'+"\n\nTestRail Integration Exception: It looks like you are trying to use TestRail Integration without providing test run id. \nPlease provide a valid test run id along with test run command using -R flag and try again. for eg: pytest --testrail_flag Y -R 100\n"+'\033[0m')
+=======
+                test_mobile_obj.write('\033[91m'+"\n\nTestRail Integration Exception: It looks like you are trying to use TestRail Integration without providing test run id. \nPlease provide a valid test run id along with test run command using -R flag and try again. for eg: pytest -X Y -R 100\n"+'\033[0m')
+>>>>>>> master
                 testrail_flag = 'N'
             if test_run_id is not None:
                 test_mobile_obj.register_testrail()
@@ -78,9 +86,15 @@ def testname(request):
     try:
         name_of_test = request.node.name
         name_of_test = name_of_test.split('[')[0]
+<<<<<<< HEAD
 
         return name_of_test
 
+=======
+
+        return name_of_test
+
+>>>>>>> master
     except Exception as e:
         print("Exception when trying to run test: %s"%__file__)
         print("Python says:%s"%str(e))
@@ -101,7 +115,11 @@ def browser(request):
 def base_url(request):
     "pytest fixture for base url"
     try:
+<<<<<<< HEAD
         return request.config.getoption("-U")
+=======
+        return request.config.getoption("--app_url")
+>>>>>>> master
 
     except Exception as e:
         print("Exception when trying to run test: %s"%__file__)
@@ -112,7 +130,11 @@ def base_url(request):
 def api_url(request):
     "pytest fixture for base url"
     try:
+<<<<<<< HEAD
         return request.config.getoption("-A")
+=======
+        return request.config.getoption("--api_url")
+>>>>>>> master
 
     except Exception as e:
         print("Exception when trying to run test: %s"%__file__)
@@ -123,7 +145,11 @@ def api_url(request):
 def test_run_id(request):
     "pytest fixture for test run id"
     try:
+<<<<<<< HEAD
         return request.config.getoption("-R")
+=======
+        return request.config.getoption("--test_run_id")
+>>>>>>> master
 
     except Exception as e:
         print("Exception when trying to run test: %s"%__file__)
@@ -133,7 +159,12 @@ def test_run_id(request):
 @pytest.fixture
 def testrail_flag(request):
     "pytest fixture for test rail flag"
+<<<<<<< HEAD
     return request.config.getoption("--testrail_flag")
+=======
+    try:
+        return request.config.getoption("--testrail_flag")
+>>>>>>> master
 
     except Exception as e:
         print("Exception when trying to run test: %s"%__file__)
@@ -144,6 +175,10 @@ def testrail_flag(request):
 def remote_flag(request):
     "pytest fixture for browserstack/sauce flag"
     try:
+<<<<<<< HEAD
+=======
+        return request.config.getoption("--remote_flag")
+>>>>>>> master
 
     except Exception as e:
         print("Exception when trying to run test: %s"%__file__)
@@ -165,7 +200,11 @@ def browser_version(request):
 def os_name(request):
     "pytest fixture for os_name"
     try:
+<<<<<<< HEAD
     return request.config.getoption("--os_name")
+=======
+        return request.config.getoption("--os_name")
+>>>>>>> master
 
     except Exception as e:
         print("Exception when trying to run test: %s"%__file__)
@@ -176,7 +215,11 @@ def os_name(request):
 def os_version(request):
     "pytest fixture for os version"
     try:
+<<<<<<< HEAD
         return request.config.getoption("-O")
+=======
+        return request.config.getoption("--os_version")
+>>>>>>> master
 
     except Exception as e:
         print("Exception when trying to run test: %s"%__file__)
@@ -209,6 +252,10 @@ def remote_build_name(request):
 def slack_flag(request):
     "pytest fixture for sending reports on slack"
     try:
+<<<<<<< HEAD
+=======
+        return request.config.getoption("--slack_flag")
+>>>>>>> master
 
     except Exception as e:
         print("Exception when trying to run test: %s"%__file__)
@@ -230,6 +277,10 @@ def tesults_flag(request):
 def mobile_os_name(request):
     "pytest fixture for mobile os name"
     try:
+<<<<<<< HEAD
+=======
+        return request.config.getoption("--mobile_os_name")
+>>>>>>> master
 
     except Exception as e:
         print("Exception when trying to run test: %s"%__file__)
@@ -240,6 +291,10 @@ def mobile_os_name(request):
 def mobile_os_version(request):
     "pytest fixture for mobile os version"
     try:
+<<<<<<< HEAD
+=======
+        return request.config.getoption("--mobile_os_version")
+>>>>>>> master
 
     except Exception as e:
         print("Exception when trying to run test: %s"%__file__)
@@ -250,6 +305,10 @@ def mobile_os_version(request):
 def device_name(request):
     "pytest fixture for device name"
     try:
+<<<<<<< HEAD
+=======
+        return request.config.getoption("--device_name")
+>>>>>>> master
 
     except Exception as e:
         print("Exception when trying to run test: %s"%__file__)
@@ -260,6 +319,10 @@ def device_name(request):
 def app_package(request):
     "pytest fixture for app package"
     try:
+<<<<<<< HEAD
+=======
+        return request.config.getoption("--app_package")
+>>>>>>> master
 
     except Exception as e:
         print("Exception when trying to run test: %s"%__file__)
@@ -270,6 +333,10 @@ def app_package(request):
 def app_activity(request):
     "pytest fixture for app activity"
     try:
+<<<<<<< HEAD
+=======
+        return request.config.getoption("--app_activity")
+>>>>>>> master
 
     except Exception as e:
         print("Exception when trying to run test: %s"%__file__)
@@ -280,6 +347,10 @@ def app_activity(request):
 def device_flag(request):
     "pytest fixture for device flag"
     try:
+<<<<<<< HEAD
+=======
+        return request.config.getoption("--device_flag")
+>>>>>>> master
 
     except Exception as e:
         print("Exception when trying to run test: %s"%__file__)
@@ -301,15 +372,23 @@ def email_pytest_report(request):
 def app_name(request):
     "pytest fixture for app name"
 <<<<<<< HEAD
+<<<<<<< HEAD
     try:
         return request.config.getoption("-D")
+=======
+    try:
+        return request.config.getoption("--app_name")
+>>>>>>> master
 
     except Exception as e:
         print("Exception when trying to run test: %s"%__file__)
         print("Python says:%s"%str(e))
+<<<<<<< HEAD
 =======
     return request.config.getoption("--app_name")
 >>>>>>> fa59373... commit 03-07-2020
+=======
+>>>>>>> master
 
 
 @pytest.fixture
@@ -367,6 +446,10 @@ def no_reset_flag(request):
 def app_path(request):
     "pytest fixture for app path"
     try:
+<<<<<<< HEAD
+=======
+        return request.config.getoption("--app_path")
+>>>>>>> master
 
     except Exception as e:
         print("Exception when trying to run test: %s"%__file__)
@@ -422,6 +505,7 @@ def pytest_generate_tests(metafunc):
                                         browser_os_name_conf.cross_browser_cross_platform_config)
                 elif metafunc.config.getoption("--browser") == []:
 <<<<<<< HEAD
+<<<<<<< HEAD
                     metafunc.parametrize("browser,browser_version,os_name,os_version",
                                         browser_os_name_conf.default_config_list)
                 else:
@@ -429,6 +513,8 @@ def pytest_generate_tests(metafunc):
                     metafunc.parametrize("browser,browser_version,os_name,os_version",
                                         config_list)
 =======
+=======
+>>>>>>> master
                     metafunc.parametrize("browser,browser_version,os_name,os_version",
                                         browser_os_name_conf.default_config_list)
                 else:
@@ -448,9 +534,16 @@ def pytest_generate_tests(metafunc):
     except Exception as e:
         print("Exception when trying to run test: %s"%__file__)
         print("Python says:%s"%str(e))
+<<<<<<< HEAD
 
 
 
+=======
+
+
+
+
+>>>>>>> master
 def pytest_addoption(parser):
     "Method to add the option to ini."
     try:
@@ -532,6 +625,7 @@ def pytest_addoption(parser):
                             help="Enter name of app activity. Ex: .MainActivity",
                             default=".MainActivity")
         parser.addoption("--device_flag",
+<<<<<<< HEAD
                         dest="device_flag",
                         help="Enter Y or N. 'Y' if you want to run the test on device. 'N' if you want to run the test on emulator.",
                         default="N")
@@ -563,6 +657,8 @@ def pytest_addoption(parser):
                         dest="no_reset_flag",
                         help="Pass false if you want to reset app eveytime you run app else false",
                         default="true")
+=======
+>>>>>>> master
                             dest="device_flag",
                             help="Enter Y or N. 'Y' if you want to run the test on device. 'N' if you want to run the test on emulator.",
                             default="N")
