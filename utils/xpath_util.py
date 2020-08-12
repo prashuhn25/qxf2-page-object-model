@@ -72,13 +72,11 @@ class Xpath_Util:
                         elif not guessable_element in self.guessable_elements:
                             print("We are not supporting this gussable element")
 
-
         return result_flag
 
     def get_variable_names(self,element):
         "generate the variable names for the xpath"
         # condition to check the length of the 'id' attribute and ignore if there are numerics in the 'id' attribute. Also ingnoring id values having "input" and "button" strings.
-
         if (element.has_attr('id') and len(element['id'])>2) and bool(re.search(r'\d', element['id'])) == False and ("input" not in element['id'].lower() and "button" not in element['id'].lower()):
             self.variable_name = element['id'].strip("_")
         # condition to check if the 'value' attribute exists and not having date and time values in it.

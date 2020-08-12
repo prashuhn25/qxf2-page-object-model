@@ -175,16 +175,9 @@ d) On Ubuntu, you may run into an issue installing the cryptography module. You 
 Continuous Integration and Support
 -----------
 This project uses:
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 <a href="https://www.browserstack.com/"><img src="http://www.browserstack.com/images/layout/browserstack-logo-600x315.png" width="150" height="100" hspace="10"></a>
-=======
-<a href="https://www.browserstack.com/">
-<img src="http://www.browserstack.com/images/layout/browserstack-logo-600x315.png" width="150" height="100" hspace="10"></a>
->>>>>>> 03dbd21... Updated the browserstack image
-=======
-<a href="https://www.browserstack.com/"><img src="http://www.browserstack.com/images/layout/browserstack-logo-600x315.png" width="150" height="100" hspace="10"></a>
->>>>>>> 40202ed... Updated the browserstack image path and removed the extra space between anchor and image tags
+
 <a href="https://circleci.com/"><img src="https://github.com/circleci/media/blob/master/logo/build/horizontal_dark.1.png?raw=true" width="150" height="100" hspace="10"></a>
 
 
