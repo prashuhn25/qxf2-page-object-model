@@ -8,10 +8,7 @@ import os,sys,requests,json
 from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-<<<<<<< HEAD
-=======
 from selenium.webdriver.chrome.options import Options
->>>>>>> master
 from selenium.webdriver.remote.webdriver import RemoteConnection
 from appium import webdriver as mobile_webdriver
 from conf import remote_credentials
@@ -95,12 +92,7 @@ class DriverFactory():
         desired_capabilities['platform'] = os_name + ' '+os_version
 
 
-<<<<<<< HEAD
-        return webdriver.Remote(command_executor="http://%s:%s@ondemand.saucelabs.com:80/wd/hub"%(USERNAME,PASSWORD),
-                desired_capabilities= desired_capabilities)
-=======
         return webdriver.Remote(command_executor="http://%s:%s@ondemand.saucelabs.com:80/wd/hub"%(USERNAME,PASSWORD),desired_capabilities= desired_capabilities)
->>>>>>> master
 
 
     def run_local(self,os_name,os_version,browser,browser_version):
