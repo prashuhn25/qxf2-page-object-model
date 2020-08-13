@@ -72,7 +72,6 @@ class Xpath_Util:
                         elif not guessable_element in self.guessable_elements:
                             print("We are not supporting this gussable element")
 
-
         return result_flag
 
     def get_variable_names(self,element):
